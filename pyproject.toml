@@ -88,7 +88,7 @@ dev = [
   "pytest-asyncio",
   "pytest-cov",
   "pytest-mypy",
-  "pytest-pylint",
+  "pytest-pylint<0.21.0",
   "pytest-repeat",
   "pytest-timeout",
   "setuptools>=75",
