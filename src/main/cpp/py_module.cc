@@ -604,7 +604,30 @@ PYBIND11_MODULE(_riscv, m) {
         .def("store_conditional_32", &mmu_t::store_conditional<uint32_t>,
              py::arg("addr"), py::arg("val"))
         .def("store_conditional_64", &mmu_t::store_conditional<uint64_t>,
-             py::arg("addr"), py::arg("val"));
+             py::arg("addr"), py::arg("val"))
+        .def("store_uint8", [](mmu_t &m, reg_t addr, uint8_t val) {
+            m.store<uint8_t>(addr, val);
+        }, py::arg("addr"), py::arg("val"))
+
+        .def("store_uint32", [](mmu_t &m, reg_t addr, uint32_t val) {
+            m.store<uint32_t>(addr, val);
+        }, py::arg("addr"), py::arg("val"))
+
+        .def("store_uint64", [](mmu_t &m, reg_t addr, uint64_t val) {
+            m.store<uint64_t>(addr, val);
+        }, py::arg("addr"), py::arg("val"))
+        .def("load_uint8", [](mmu_t &m, reg_t addr) {
+            return m.load<uint8_t>(addr);
+        }, py::arg("addr"))
+        .def("load_uint16", [](mmu_t &m, reg_t addr) {
+            return m.load<uint16_t>(addr);
+        }, py::arg("addr"))
+        .def("load_uint32", [](mmu_t &m, reg_t addr) {
+            return m.load<uint32_t>(addr);
+        }, py::arg("addr"))
+        .def("load_uint64", [](mmu_t &m, reg_t addr) {
+            return m.load<uint64_t>(addr);
+        }, py::arg("addr"));
   }
 
   // riscv.processor
