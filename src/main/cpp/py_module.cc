@@ -110,6 +110,11 @@ PYBIND11_MODULE(_riscv, m) {
     py::class_<const_csr_t, csr_t, py::smart_holder>(mod_csrs, "const_csr_t")
         .def(py::init<processor_t *const, const reg_t, reg_t>(),
              py::arg("proc"), py::arg("addr"), py::arg("val"));
+
+    py::class_<mip_csr_t, csr_t, py::smart_holder>(mod_csrs, "mip_csr_t")
+        .def(py::init<processor_t *const, const reg_t>(),
+             py::arg("proc"), py::arg("addr"))
+        .def("backdoor_write_with_mask", &mip_csr_t::backdoor_write_with_mask);
   }
 
   // riscv.debug_module
@@ -684,6 +689,7 @@ PYBIND11_MODULE(_riscv, m) {
         .def_readonly("last_inst_priv", &state_t::last_inst_priv)
         .def_readonly("last_inst_xlen", &state_t::last_inst_xlen)
         .def_readonly("last_inst_flen", &state_t::last_inst_flen)
+        .def_readonly("mip", &state_t::mip)
         // commit logs
         .def_property_readonly(
             "log_reg_write",
