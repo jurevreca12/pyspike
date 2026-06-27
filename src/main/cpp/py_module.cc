@@ -21,6 +21,7 @@
 
 #include <pybind11/functional.h>
 #include <pybind11/pybind11.h>
+#include <pybind11/native_enum.h>
 #include <pybind11/stl.h>
 #include <pybind11/stl_bind.h>
 
@@ -748,6 +749,7 @@ PYBIND11_MODULE(_riscv, m) {
         .def("get_extension",
              py::overload_cast<const char *>(&processor_t::get_extension),
              py::arg("name"))
+	.def_readwrite("halt_request", &processor_t::halt_request)
         // reset
         .def("reset", &processor_t::reset)
         // step
@@ -766,8 +768,15 @@ PYBIND11_MODULE(_riscv, m) {
             },
             py::arg("proc"));
 
-    // insn_func_t bindings
+    using halt_request_t = decltype(std::declval<processor_t>().halt_request); 
+    py::native_enum<halt_request_t>(mod_processor, "halt_request", "enum.Enum")
+        .value("HR_NONE",    processor_t::HR_NONE)
+        .value("HR_REGULAR", processor_t::HR_REGULAR)
+        .value("HR_GROUP",   processor_t::HR_GROUP)
+        .export_values()
+        .finalize();
 
+    // insn_func_t bindings
     using namespace py::literals;
 
     auto ctypes = py::module_::import("ctypes");
