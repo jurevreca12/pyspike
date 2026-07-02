@@ -947,9 +947,7 @@ PYBIND11_MODULE(_riscv, m) {
     py::class_<htif_t, py::smart_holder>(mod_htif, "htif_t")
         .def_property_readonly("tohost_addr", &htif_t::get_tohost_addr)
         .def_property_readonly("fromhost_addr", &htif_t::get_fromhost_addr)
-        .def("htif_exit", &sim_t::htif_exit, py::arg("exit_code"))
-	.def("start", &htif_t::start)
-	.def("start", &htif_t::stop);
+        .def("htif_exit", &sim_t::htif_exit, py::arg("exit_code"));
   }
 
   // riscv.simif
@@ -977,6 +975,8 @@ PYBIND11_MODULE(_riscv, m) {
         .def("get_core", py::overload_cast<size_t>(&sim_t::get_core),
              py::arg("i"), py::return_value_policy::reference_internal)
         .def("get_dts", &sim_t::get_dts)
+	.def("start", &sim_t::start)
+	.def("stop", &sim_t::stop)
         .def("set_debug", &sim_t::set_debug, py::arg("value"))
         .def("configure_log", &sim_t::configure_log, py::arg("enable_log"),
              py::arg("enable_commitlog"))
